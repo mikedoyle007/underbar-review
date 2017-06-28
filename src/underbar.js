@@ -396,6 +396,16 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+    var returnObj = [];
+    _.every(collection, function(item) {
+      
+      if (typeof functionOrKey === 'function') {
+        returnObj.push(functionOrKey.apply(item));
+      } else {
+        returnObj.push(item[functionOrKey]());
+      }
+    });
+    return returnObj;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -403,6 +413,20 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var returnObj = [];
+    var iteratorArr = [];
+    // get array of age values from all objects in collection
+    // sort array of numbers  
+    // have empty returnArr
+    // iterate through collection see which age values (in sorted array) matches age values of the collection object
+    // push that collection object into the returnArr
+    //return returnArr 
+    _.every(collection, function(item) {
+      iteratorArr.push(iterator(item));
+    });
+    iteratorArr = iteratorArr.sort();
+    
+    return returnObj;
   };
 
   // Zip together two or more arrays with elements of the same index
