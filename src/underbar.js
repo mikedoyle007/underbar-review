@@ -270,15 +270,12 @@
     }
     for (var i = 0; i < argumentsArr.length; i++) {
       var currObj = argumentsArr[i];
-      console.log('current obj ', currObj)
       for (var key in currObj) {
-        console.log(obj.hasOwnProperty(key))
         if (!obj.hasOwnProperty(key)) {
           obj[key] = currObj[key];
         }
       }
     }
-    console.log('return ', obj)
     return obj;
   };
   
@@ -322,7 +319,33 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+
+  
+
   _.memoize = function(func) {
+    var bank = {};
+
+    var inBank = function(args, bank) {
+      for (var key in bank) {
+        if (bank[args]) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    return function() {
+      var args = JSON.stringify(arguments);
+      var result;
+      if (!inBank(args, bank)) {
+        result = func.apply(this, arguments);
+        bank[args] = result;
+      } else {
+        result = bank[args];
+      }
+      return result;
+    };
+  
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -332,6 +355,7 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    setTimeout.apply(this, arguments);
   };
 
 
@@ -346,6 +370,18 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var copyArr = array.slice();
+
+    var returnArr = [];
+    var size = copyArr.length;
+    for (var i = 0; i < copyArr.length; i++) {
+      var index = Math.floor(copyArr.length * Math.random());
+      returnArr.push(copyArr[index]);
+      copyArr.splice(index, 1);
+    }
+    returnArr.push(copyArr[0]);
+    return returnArr;
+    
   };
 
 
